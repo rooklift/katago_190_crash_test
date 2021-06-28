@@ -85,7 +85,7 @@ scanner.on("line", (line) => {
 		sender();
 	}
 	if (o.version) {
-		setTimeout(pinger, 1000);						// Queue a message a second from now just to see if the engine is still alive.
+		setTimeout(pinger, 1000);						// Queue another "ping" a second from now just to see if the engine is still alive.
 	}
 });
 
