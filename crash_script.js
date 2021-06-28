@@ -84,7 +84,9 @@ scanner.on("line", (line) => {
 	if (o.id === search.id && o.isDuringSearch === false) {
 		sender();
 	}
-	setTimeout(pinger, 1000);							// Queue a message a second from now just to see if the engine is still alive.
+	if (o.version === undefined) {
+		setTimeout(pinger, 1000);						// Queue a message a second from now just to see if the engine is still alive.
+	}
 });
 
 err_scanner.on("line", (line) => {
