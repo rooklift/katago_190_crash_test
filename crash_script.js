@@ -43,7 +43,7 @@ let err_scanner = readline.createInterface({
 // ------------------------
 
 let search = {
-	"id": "s_0",					// Gets incremented each time we send it.
+	"id": "s_0",
 	"rules": "Japanese",
 	"komi": 5.5,
 	"boardXSize": 19,
@@ -62,13 +62,13 @@ let search = {
 };
 
 let terminate = {
-	"id": "t_0",					// Gets incremented each time we send it.
+	"id": "t_0",
 	"action": "terminate",
-	"terminateId": "s_0"			// Is adjusted to match the search.id.
+	"terminateId": "s_0"
 };
 
 let ping = {
-	"id": "p_0",					// Gets incremented each time we send it.
+	"id": "p_0",
 	"action": "query_version",
 };
 
@@ -84,13 +84,13 @@ scanner.on("line", (line) => {
 	if (o.id === search.id && o.isDuringSearch === false) {
 		sender();
 	}
-	setTimeout(pinger, 1000);						// Queue a message a second from now just to see if the engine is still alive.
+	setTimeout(pinger, 1000);							// Queue a message a second from now just to see if the engine is still alive.
 });
 
 err_scanner.on("line", (line) => {
 	console.log("!   " + line);
 	if (line.includes("ready to begin handling requests")) {
-		sender();									// Send the first messages to KataGo.
+		sender();												// Send the first messages to KataGo.
 	}
 });
 
@@ -99,14 +99,14 @@ err_scanner.on("line", (line) => {
 let sender = () => {
 
 	search.id = "s_" + (sid++).toString();
-	terminate.id = "t_" + (tid++).toString();		// The id of the terminate message, not the search message.
-	terminate.terminateId = search.id;
+	terminate.id = "t_" + (tid++).toString();			// The id of the terminate message, not the search message.
+	terminate.terminateId = search.id;					// The id of the search to terminate. Matches search.id.
 
 	console.log(">   " + JSON.stringify(search));
 	exe.stdin.write(JSON.stringify(search));
 	exe.stdin.write("\n");
 
-	console.log(">   " + JSON.stringify(terminate));
+	console.log(">   " + JSON.stringify(terminate));	// The point is to send the terminate immediately, this seems to cause trouble.
 	exe.stdin.write(JSON.stringify(terminate));
 	exe.stdin.write("\n");
 
